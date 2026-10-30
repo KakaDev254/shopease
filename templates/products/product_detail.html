@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %} 
+
+{% block title %}{{ product.name }} — ShopEase{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container product-detail">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="{% url 'home' %}">Home</a>
+    <i data-lucide="chevron-right"></i>
+    {% if product.category %}
+      <a href="{% url 'products:catalog' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+      <i data-lucide="chevron-right"></i>
+    {% endif %}
+    <span>{{ product.name }}</span>
+  </nav>
+
+  <div class="product-detail-grid">
+
+    <!-- GALLERY -->
+    <div class="pd-gallery">
+      <div class="pd-main-img">
+        <img id="pd-main" src="{{ product.image.url }}" alt="{{ product.name }}">
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="pd-info">
+      {% if product.brand %}<span class="pd-brand">{{ product.brand.name }}</span>{% endif %}
+      <h1>{{ product.name }}</h1>
+
+      <div class="pd-price-row">
+        <span class="pd-price">KSh {{ product.price|floatformat:0|intcomma }}</span>
+        {% if product.in_stock %}
+          <span class="stock-badge in">In Stock</span>
+        {% else %}
+          <span class="stock-badge out">Out of Stock</span>
+        {% endif %}
+      </div>
+
+      <div class="warranty-badge">
+        <i data-lucide="shield-check"></i>
+        <span>1-Year Official Warranty</span>
+      </div>
+
+      <p class="pd-desc">{{ product.description }}</p>
+
+      <!-- Quantity + Add to cart -->
+      <div class="pd-actions">
+        <div class="qty-selector">
+          <button type="button" class="qty-btn" data-action="dec">−</button>
+          <input id="pd-qty" type="number" value="1" min="1">
+          <button type="button" class="qty-btn" data-action="inc">+</button>
+        </div>
+        <button class="btn-primary add-to-cart"
+                data-slug="{{ product.slug }}"
+                data-qty-source="#pd-qty">
+          <i data-lucide="shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+
+      <!-- WhatsApp order -->
+      <a class="btn-whatsapp"
+         href="https://wa.me/254798472424?text=Hi%20ShopEase%2C%20I%20want%20to%20order%20{{ product.name|urlencode }}%20(KSh%20{{ product.price|floatformat:0 }})"
+         target="_blank" rel="noopener">
+        <i data-lucide="message-circle"></i> Order via WhatsApp
+      </a>
+
+      <!-- Specs -->
+      <div class="pd-specs">
+        <h3>Specifications</h3>
+        <table>
+          <tr><th>Brand</th><td>{{ product.brand.name|default:"—" }}</td></tr>
+          <tr><th>Category</th><td>{{ product.category.name|default:"—" }}</td></tr>
+          <tr><th>Availability</th><td>{% if product.in_stock %}Ships in 24 hrs{% else %}Restocking{% endif %}</td></tr>
+          <tr><th>Warranty</th><td>1 Year</td></tr>
+          <tr><th>SKU</th><td>SE-{{ product.id|stringformat:"05d" }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  {% if related %}
+  <section class="related-section">
+    <h2 class="section-title">You may also like</h2>
+    <div class="product-grid">
+      {% for product in related %}
+        {% include 'products/partials/product_card.html' with product=product %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Quantity selector
+  document.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById('pd-qty');
+      let v = parseInt(input.value) || 1;
+      v = btn.dataset.action === 'inc' ? v + 1 : Math.max(1, v - 1);
+      input.value = v;
+    });
+  });
+</script>
+{% endblock %}

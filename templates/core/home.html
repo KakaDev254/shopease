@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ShopEase — Tech That Keeps You Ahead{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO CAROUSEL -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-carousel" id="hero-carousel">
+            
+            {% for slide in hero_slides %}
+            <div class="hero-slide {% if forloop.first %}active{% endif %}">
+                
+                <!-- Entire poster is a clickable link -->
+                <a href="{{ slide.link_url }}" class="hero-slide-link">
+                    {% if slide.image %}
+                        <img src="{{ slide.image.url }}" 
+                             alt="{{ slide.image_alt_text }}" 
+                             class="hero-poster-img">
+                    {% endif %}
+                </a>
+
+            </div>
+            {% empty %}
+            <div class="hero-slide active">
+                 <div class="hero-placeholder">
+                     <h1>ShopEase</h1>
+                     <p style="font-size: 16px; font-weight: normal; margin-top: 10px;">Add Hero Slides in the Admin panel.</p>
+                 </div>
+            </div>
+            {% endfor %}
+
+            <!-- Navigation Arrows & Dots -->
+            {% if hero_slides|length > 1 %}
+            <button class="hero-arrow prev" id="hero-prev"><i data-lucide="chevron-left"></i></button>
+            <button class="hero-arrow next" id="hero-next"><i data-lucide="chevron-right"></i></button>
+            
+            <div class="hero-dots" id="hero-dots">
+                {% for slide in hero_slides %}
+                <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+        </div>
+    </div>
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="section bg-white">
+    <div class="container">
+        
+        <!-- Section Header with Arrows -->
+        <div class="category-header">
+            <h2 class="section-title" style="margin-bottom: 0;">Shop By Categories</h2>
+            <div class="cat-arrows">
+                <button class="cat-arrow" id="cat-prev"><i data-lucide="chevron-left"></i></button>
+                <button class="cat-arrow" id="cat-next"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Horizontal Scrolling Categories -->
+        <div class="category-slider" id="category-slider">
+            {% for cat in nav_categories %}
+                <a href="{% url 'products:catalog' %}?category={{ cat.slug }}" class="category-item">
+                    <div class="cat-image-wrap">
+                        {% if cat.image %}
+                            <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
+                        {% else %}
+                            <!-- Fallback icon if no image is uploaded in admin -->
+                            <i data-lucide="image" style="width: 40px; height: 40px; color: #cbd5e1;"></i>
+                        {% endif %}
+                    </div>
+                    <span class="cat-name">{{ cat.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<!-- TRENDING PRODUCTS -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Trending Products</h2>
+        <div class="product-grid">
+            {% for product in trending_products %}
+                {% include 'products/partials/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- PROMO BANNERS (MEGA DEALS) -->
+{% if promo_banners %}
+<section class="section" style="background: #fff; padding: 40px 0;">
+    <div class="container">
+        
+        <!-- Header with Arrows -->
+        <div class="category-header" style="margin-bottom: 20px;">
+            <h2 class="section-title" style="margin-bottom: 0;">Mega Deals</h2>
+            <div class="cat-arrows">
+                <button class="cat-arrow" id="promo-prev"><i data-lucide="chevron-left"></i></button>
+                <button class="cat-arrow" id="promo-next"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Scrolling Promo Banners -->
+        <div class="promo-slider" id="promo-slider">
+            {% for promo in promo_banners %}
+                <a href="{{ promo.link_url }}" class="promo-card">
+                    <img src="{{ promo.image.url }}" alt="{{ promo.title }}" loading="lazy">
+                </a>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+<!-- BRAND SHOWCASE -->
+<section class="section brands">
+    <div class="container">
+        <h2 class="section-title">Top Brands</h2>
+        <div class="brand-grid">
+            {% for brand in brands %}
+                <div class="brand-item"><img src="{{ brand.logo.url }}" alt="{{ brand.name }}"></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+    <div class="container">
+        <h2>Join the ShopEase VIP List</h2>
+        <p>Get exclusive tech deals delivered to your inbox.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!');">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit" class="btn-primary">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // ==========================================
+    // 1. HERO CAROUSEL LOGIC
+    // ==========================================
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('hero-prev');
+    const nextBtn = document.getElementById('hero-next');
+    let currentSlide = 0;
+    let slideInterval;
+
+    if (slides.length > 1) {
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            
+            if (index >= slides.length) currentSlide = 0;
+            if (index < 0) currentSlide = slides.length - 1;
+            
+            slides[currentSlide].classList.add('active');
+            if(dots[currentSlide]) dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetTimer(); });
+        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
+        
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                currentSlide = parseInt(e.target.dataset.index);
+                showSlide(currentSlide);
+                resetTimer();
+            });
+        });
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 5000); 
+        }
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+        startTimer();
+    }
+
+    // ==========================================
+    // 2. CATEGORY SLIDER (Arrows & Auto-Slide)
+    // ==========================================
+    const catSlider = document.getElementById('category-slider');
+    const catPrev = document.getElementById('cat-prev');
+    const catNext = document.getElementById('cat-next');
+    let catAutoSlide;
+
+    if (catSlider && catPrev && catNext) {
+        // Manual Arrows
+        catNext.addEventListener('click', () => {
+            catSlider.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+
+        catPrev.addEventListener('click', () => {
+            catSlider.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        // Auto-Slide function
+        function startCatSlide() {
+            catAutoSlide = setInterval(() => {
+                // If we've reached the end, loop back to start
+                if (catSlider.scrollLeft + catSlider.clientWidth >= catSlider.scrollWidth - 10) {
+                    catSlider.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Otherwise, scroll right by roughly one item width
+                    catSlider.scrollBy({ left: 170, behavior: 'smooth' });
+                }
+            }, 3500); // 3.5 seconds
+        }
+
+        // Start on load
+        startCatSlide();
+
+        // Pause when user hovers over the slider
+        catSlider.addEventListener('mouseenter', () => clearInterval(catAutoSlide));
+        
+        // Resume when mouse leaves
+        catSlider.addEventListener('mouseleave', startCatSlide);
+    }
+
+        // ==========================================
+    // 3. PROMO SLIDER LOGIC
+    // ==========================================
+    const promoSlider = document.getElementById('promo-slider');
+    const promoPrev = document.getElementById('promo-prev');
+    const promoNext = document.getElementById('promo-next');
+
+    if (promoSlider && promoPrev && promoNext) {
+        promoNext.addEventListener('click', () => {
+            promoSlider.scrollBy({ left: 280, behavior: 'smooth' });
+        });
+
+        promoPrev.addEventListener('click', () => {
+            promoSlider.scrollBy({ left: -280, behavior: 'smooth' });
+        });
+    }
+
+});
+</script>
+{% endblock %}

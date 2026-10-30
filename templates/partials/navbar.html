@@ -1,0 +1,165 @@
+{% load static %}
+
+<!-- ================= TOP CONTACT BAR ================= -->
+<div class="top-bar">
+  <div class="container top-bar-container">
+    
+    <!-- Left side: Email -->
+    <div class="top-bar-left">
+      <a href="mailto:sales@shopease.co.ke">
+        <i data-lucide="mail"></i> sales@shopease.co.ke
+      </a>
+    </div>
+
+    <!-- Right side: Phone & WhatsApp -->
+    <div class="top-bar-right">
+      <a href="tel:0798472424">
+        <i data-lucide="phone"></i> 0798 472 424
+      </a>
+      <span class="divider">|</span>
+      <a href="https://wa.me/254798472424" target="_blank" rel="noopener">
+        <i data-lucide="message-circle"></i> WhatsApp Order
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= MAIN NAV ================= -->
+<header class="main-nav">
+  <div class="container">
+
+    <!-- Logo -->
+    <a href="{% url 'home' %}" class="logo">
+      <span class="logo-icon"><i data-lucide="shopping-bag"></i></span>
+      <span class="logo-text">Shop<span class="logo-orange">Ease</span></span>
+    </a>
+
+    <!-- Search (Hidden on Mobile) -->
+    <form class="search-bar" action="{% url 'products:catalog' %}" method="get" id="search-form">
+      <select name="category">
+        <option value="">All</option>
+        {% for cat in nav_categories %}
+          <option value="{{ cat.slug }}">{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+      <input type="search"
+             name="q"
+             id="search-input"
+             placeholder="Search in 20,000+ products..."
+             autocomplete="off">
+      <button type="submit" aria-label="Search">
+        <i data-lucide="search"></i>
+      </button>
+      <!-- Live results dropdown -->
+      <div id="search-results" class="search-results"></div>
+    </form>
+
+    <!-- Quick actions -->
+    <div class="nav-actions">
+      
+      <!-- Mobile Search Icon (Hidden on Desktop) -->
+      <button class="icon-btn mobile-search-btn" aria-label="Search">
+        <i data-lucide="search"></i>
+      </button>
+
+      <!-- Wishlist -->
+      <button class="icon-btn" id="wishlist-toggle" aria-label="Wishlist">
+        <i data-lucide="heart"></i>
+        <span class="badge" id="wishlist-badge"
+              {% if wishlist_count == 0 %}style="display:none"{% endif %}>
+          {{ wishlist_count|default:0 }}
+        </span>
+      </button>
+
+      <!-- Cart -->
+      <button class="icon-btn" id="cart-toggle" aria-label="Cart">
+        <i data-lucide="shopping-cart"></i>
+        <span class="badge" id="cart-badge"
+              {% if cart_count == 0 %}style="display:none"{% endif %}>
+          {{ cart_count|default:0 }}
+        </span>
+      </button>
+
+      <!-- Account -->
+      {% if user.is_authenticated %}
+        <div class="account-menu">
+          <button class="icon-btn" id="account-toggle" aria-label="Account">
+            <i data-lucide="user"></i>
+          </button>
+          <div class="account-dropdown" id="account-dropdown">
+            <a href="{% url 'accounts:profile' %}"><i data-lucide="user"></i> My Account</a>
+            <a href="{% url 'accounts:orders' %}"><i data-lucide="package"></i> My Orders</a>
+            <a href="{% url 'accounts:logout' %}"><i data-lucide="log-out"></i> Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="icon-btn" aria-label="Login">
+          <i data-lucide="user"></i>
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+</header>
+
+<!-- ================= CATEGORY STRIP ================= -->
+<div class="category-strip">
+  <div class="container">
+
+    <!-- All Departments mega toggle -->
+    <div class="mega-wrapper">
+      <button class="mega-toggle" id="mega-toggle">
+        <i data-lucide="menu"></i>
+        <span>All Departments</span>
+        <i data-lucide="chevron-down"></i>
+      </button>
+      <div class="mega-menu" id="mega-menu">
+        <ul>
+          {% for cat in nav_categories %}
+            <li>
+              <a href="{% url 'products:catalog' %}?category={{ cat.slug }}">
+                <i data-lucide="chevron-right"></i>
+                {{ cat.name }}
+              </a>
+            </li>
+          {% empty %}
+            <li><a href="{% url 'products:catalog' %}">All Products</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Horizontal categories -->
+    <nav class="category-links">
+      <a href="{% url 'products:catalog' %}">Shop All</a>
+      {% for cat in nav_categories %}
+        <a href="{% url 'products:catalog' %}?category={{ cat.slug }}">{{ cat.name }}</a>
+      {% endfor %}
+    </nav>
+
+  </div>
+</div>
+
+<!-- ================= DROPDOWN TOGGLE SCRIPT ================= -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const megaToggle = document.getElementById('mega-toggle');
+    const megaMenu = document.getElementById('mega-menu');
+
+    if (megaToggle && megaMenu) {
+        // Toggle the menu when clicking the button
+        megaToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the click from bubbling up to the document
+            megaMenu.classList.toggle('show');
+        });
+
+        // Close the menu when clicking anywhere outside of it
+        document.addEventListener('click', (e) => {
+            if (!megaMenu.contains(e.target) && !megaToggle.contains(e.target)) {
+                megaMenu.classList.remove('show');
+            }
+        });
+    }
+});
+</script>

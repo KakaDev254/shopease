@@ -1,0 +1,21 @@
+<div class="drawer-overlay" id="cart-overlay"></div>
+
+<aside class="drawer cart-drawer" id="cart-drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <h2><i data-lucide="shopping-cart"></i> Your Cart</h2>
+    <button class="drawer-close" id="cart-close" aria-label="Close cart">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <div class="drawer-body" id="cart-drawer-body">
+    <!-- Filled dynamically by cart.js via /products/api/cart/drawer/ -->
+    <div class="drawer-loading">
+      <i data-lucide="loader-2"></i>
+    </div>
+  </div>
+
+  <div class="drawer-footer" id="cart-drawer-footer">
+    <!-- Rendered by cart.js with subtotal + WhatsApp checkout -->
+  </div>
+</aside>

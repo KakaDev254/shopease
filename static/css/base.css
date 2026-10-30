@@ -1,0 +1,253 @@
+:root {
+    --navy: #0F172A;
+    --orange: #F95721;
+    --orange-dark: #EA580C;
+    --white: #FFFFFF;
+    --gray-bg: #F8FAFC;
+    --border: #E2E8F0;
+    --text: #1E293B;
+    --text-muted: #64748B;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+.btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.btn-primary:hover { background: var(--orange-dark); }
+
+.section { padding: 60px 0; }
+.section-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 28px;
+}
+
+/* ---------- PRODUCT GRID (SEAMLESS TABLE LOOK) ---------- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0; 
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+/* ---------- MINIMALIST PRODUCT CARD ---------- */
+.product-card {
+    background: #fff;
+    border: none; 
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-radius: 0; 
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, z-index 0.3s ease;
+}
+
+.product-card:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    z-index: 10;
+}
+
+/* Image Container */
+.product-img-wrap {
+    display: block;
+    aspect-ratio: 1/1;
+    padding: 30px;
+    background: var(--gray-bg); /* Subtle tint to make white products pop */
+    position: relative;
+    border-bottom: 1px solid var(--border);
+}
+.product-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+.product-card:hover .product-img-wrap img {
+    transform: scale(1.05); 
+}
+
+/* ---------- HOVER ACTIONS (DESKTOP) ---------- */
+.product-actions {
+    position: absolute;
+    top: 20px;
+    right: -50px; /* Hide off-screen to the right */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+    opacity: 0; /* Hide by default */
+    transition: all 0.3s ease;
+}
+
+/* Slide in on hover */
+.product-card:hover .product-actions {
+    right: 20px; /* Slide to the visible position */
+    opacity: 1;  /* Fade in */
+}
+
+.action-btn {
+    width: 38px;
+    height: 38px;
+    background: #fff; /* White background for buttons to contrast against tinted image bg */
+    border: 1px solid var(--border);
+    border-radius: 6px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy); 
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+}
+
+.action-btn i {
+    width: 18px;
+    height: 18px;
+}
+
+/* Product Body */
+.product-body {
+    padding: 16px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-category {
+    font-size: 12px;
+    text-transform: capitalize;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 500;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration: none;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2; /* Safari / Chrome */
+    line-clamp: 2;         /* Standard */
+    min-height: 44px; 
+}
+.product-name:hover {
+    color: var(--orange);
+}
+
+.product-price-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+.product-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--orange); /* Vibrant brand orange */
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Product Grid)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1 column on mobile */
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Vertical Layout (Image top, text bottom) */
+    .product-card {
+        flex-direction: column;
+        height: auto; 
+    }
+
+    /* Large Image Area */
+    .product-img-wrap {
+        width: 100%;
+        aspect-ratio: 1/1;
+        padding: 40px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    /* Text Area */
+    .product-body {
+        padding: 16px;
+        width: 100%;
+        height: auto;
+    }
+
+    .product-category {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .product-name {
+        font-size: 15px;
+        margin-bottom: 12px;
+        min-height: auto;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+
+    .product-price {
+        font-size: 18px;
+    }
+
+    /* 
+      OVERRIDE FOR MOBILE: 
+      Since there is no hover on touch screens, we force the 
+      buttons to be permanently visible in the top right.
+    */
+    .product-actions {
+        top: 15px;
+        right: 15px; /* Instantly visible */
+        flex-direction: column; 
+        gap: 8px;
+        opacity: 1; /* Override the 0 opacity */
+        transition: none; /* Disable the slide animation */
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+        background: #fff; /* White background on mobile */
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+}

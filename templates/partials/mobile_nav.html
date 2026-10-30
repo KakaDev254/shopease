@@ -1,0 +1,27 @@
+<nav class="mobile-nav">
+  <a href="{% url 'home' %}" class="mobile-nav-item">
+    <i data-lucide="home"></i>
+    <span>Home</span>
+  </a>
+  <a href="{% url 'products:catalog' %}" class="mobile-nav-item">
+    <i data-lucide="grid"></i>
+    <span>Shop</span>
+  </a>
+  <button class="mobile-nav-item" id="mobile-cart-toggle">
+    <i data-lucide="shopping-cart"></i>
+    <span>Cart</span>
+    <span class="badge mobile-badge" id="mobile-cart-badge"
+          {% if cart_count == 0 %}style="display:none"{% endif %}>{{ cart_count|default:0 }}</span>
+  </button>
+  <button class="mobile-nav-item" id="mobile-wishlist-toggle">
+    <i data-lucide="heart"></i>
+    <span>Wishlist</span>
+    <span class="badge mobile-badge" id="mobile-wishlist-badge"
+          {% if wishlist_count == 0 %}style="display:none"{% endif %}>{{ wishlist_count|default:0 }}</span>
+  </button>
+  <a href="{% if user.is_authenticated %}{% url 'accounts:profile' %}{% else %}{% url 'accounts:login' %}{% endif %}"
+     class="mobile-nav-item">
+    <i data-lucide="user"></i>
+    <span>Account</span>
+  </a>
+</nav>

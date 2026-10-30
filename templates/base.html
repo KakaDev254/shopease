@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopEase Kenya{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/drawers.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile_nav.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    {% include 'partials/navbar.html' %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html' %}
+    {% include 'partials/mobile_nav.html' %}
+
+    {% include 'partials/cart_drawer.html' %}
+    {% include 'partials/wishlist_drawer.html' %}
+
+    <!-- Flash messages -->
+    {% if messages %}
+    <div class="toast-wrap">
+      {% for m in messages %}
+        <div class="toast toast-{{ m.tags }}">{{ m }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/wishlist.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    <script>lucide.createIcons();</script>
+</body>
+</html>

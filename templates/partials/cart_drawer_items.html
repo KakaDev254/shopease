@@ -1,0 +1,41 @@
+{% load humanize %}
+{% if items %}
+    <div class="cart-items-list">
+        {% for item in items %}
+        <div class="cart-item">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            <div class="cart-item-details">
+                <a href="{% url 'products:detail' item.product.slug %}" class="ci-name">{{ item.product.name }}</a>
+                <div class="ci-price">KSh {{ item.product.price|floatformat:0|intcomma }}</div>
+                
+                <div class="ci-actions">
+                    <div class="ci-qty">
+                        <button class="cart-qty-btn" data-slug="{{ item.product.slug }}" data-action="dec">−</button>
+                        <input type="number" id="qty-{{ item.product.slug }}" value="{{ item.qty }}" readonly>
+                        <button class="cart-qty-btn" data-slug="{{ item.product.slug }}" data-action="inc">+</button>
+                    </div>
+                    <span class="ci-total">KSh {{ item.line_total|floatformat:0|intcomma }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Subtotal & Checkout -->
+    <div style="margin-top: 20px;">
+        <div class="subtotal">
+            <span>Subtotal</span>
+            <span>KSh {{ subtotal|floatformat:0|intcomma }}</span>
+        </div>
+        <a href="https://wa.me/254798472424?text=Hi%20ShopEase,%20I'd%20like%20to%20checkout%20my%20cart" 
+           target="_blank" class="btn-primary btn-block" style="text-align:center; display:block; padding: 12px;">
+            Checkout via WhatsApp
+        </a>
+    </div>
+{% else %}
+    <div class="empty-state" style="padding: 40px 0; text-align: center;">
+        <i data-lucide="shopping-cart" style="width: 40px; height: 40px; color: #cbd5e1; margin-bottom: 10px;"></i>
+        <p style="color: var(--text-muted);">Your cart is empty.</p>
+    </div>
+{% endif %}
+<script>lucide.createIcons();</script>

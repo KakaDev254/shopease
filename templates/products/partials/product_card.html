@@ -1,0 +1,42 @@
+{% load static humanize %}
+
+<div class="product-card">
+    
+    <!-- Image Container -->
+    <a href="{% url 'products:detail' product.slug %}" class="product-img-wrap">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.image_alt_text|default:product.name }}" loading="lazy">
+        {% endif %}
+    </a>
+
+    <!-- Always Visible Actions (Right Side) -->
+    <div class="product-actions">
+        <!-- Wishlist -->
+        <button class="action-btn wish-btn" data-slug="{{ product.slug }}" title="Add to Wishlist">
+            <i data-lucide="heart"></i>
+        </button>
+        
+        <!-- Add to Cart -->
+        <button class="action-btn add-to-cart" data-slug="{{ product.slug }}" title="Add to Cart">
+            <i data-lucide="shopping-cart"></i>
+        </button>
+
+        <!-- Quick View -->
+        <a href="{% url 'products:detail' product.slug %}" class="action-btn" title="Quick View">
+            <i data-lucide="eye"></i>
+        </a>
+    </div>
+
+    <!-- Product Details -->
+    <div class="product-body">
+        <span class="product-category">
+            {{ product.category.name|default:"Electronics" }}
+        </span>
+
+        <a href="{% url 'products:detail' product.slug %}" class="product-name">{{ product.name }}</a>
+
+        <div class="product-price-wrap">
+            <span class="product-price">KSh {{ product.price|floatformat:0|intcomma }}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {% if active_category %}{{ active_category.name }}{% else %}Shop All{% endif %} — ShopEase
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container catalog-wrap">
+
+  <!-- ---------- SIDEBAR FILTERS ---------- -->
+  <aside class="catalog-sidebar">
+    <form method="get" id="filter-form">
+
+      <!-- Categories -->
+      <div class="filter-block">
+        <h3>Category</h3>
+        <label class="filter-row">
+          <input type="radio" name="category" value="" {% if not active_category %}checked{% endif %}>
+          <span>All</span>
+        </label>
+        {% for c in categories %}
+          <label class="filter-row">
+            <input type="radio" name="category" value="{{ c.slug }}"
+                   {% if active_category and active_category.slug == c.slug %}checked{% endif %}>
+            <span>{{ c.name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <!-- Brands -->
+      <div class="filter-block">
+        <h3>Brand</h3>
+        {% for b in brands %}
+          <label class="filter-row">
+            <input type="checkbox" name="brand" value="{{ b.slug }}"
+                   {% if b.slug in selected_brands %}checked{% endif %}>
+            <span>{{ b.name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <!-- Price -->
+      <div class="filter-block">
+        <h3>Price (KSh)</h3>
+        <div class="price-inputs">
+          <input type="number" name="min_price" placeholder="{{ price_lo }}"
+                 value="{{ min_price }}" min="{{ price_lo }}" max="{{ price_hi }}">
+          <span>—</span>
+          <input type="number" name="max_price" placeholder="{{ price_hi }}"
+                 value="{{ max_price }}" min="{{ price_lo }}" max="{{ price_hi }}">
+        </div>
+      </div>
+
+      <!-- In-stock -->
+      <div class="filter-block">
+        <label class="filter-row">
+          <input type="checkbox" name="in_stock" value="1" {% if in_stock_only %}checked{% endif %}>
+          <span>In stock only</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-primary btn-block">Apply filters</button>
+      <a href="{% url 'products:catalog' %}" class="btn-clear">Clear all</a>
+    </form>
+  </aside>
+
+  <!-- ---------- RESULTS ---------- -->
+  <section class="catalog-main">
+
+    <div class="catalog-toolbar">
+      <p class="result-count"><strong>{{ product_count }}</strong> product{{ product_count|pluralize }}</p>
+      <form method="get" class="sort-form">
+        {# preserve other filters #}
+        {% for k, v in request.GET.items %}
+          {% if k != 'sort' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endif %}
+        {% endfor %}
+        <label>Sort by
+          <select name="sort" onchange="this.form.submit()">
+            <option value="popular"     {% if sort == 'popular' %}selected{% endif %}>Most Popular</option>
+            <option value="price_asc"   {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price_desc"  {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+            <option value="newest"      {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+          </select>
+        </label>
+      </form>
+    </div>
+
+    {% if products %}
+      <div class="product-grid">
+        {% for product in products %}
+          {% include 'products/partials/product_card.html' with product=product %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i data-lucide="search-x"></i>
+        <h2>No products found</h2>
+        <p>Try adjusting your filters or <a href="{% url 'products:catalog' %}">clear all</a>.</p>
+      </div>
+    {% endif %}
+
+  </section>
+</div>
+{% endblock %}

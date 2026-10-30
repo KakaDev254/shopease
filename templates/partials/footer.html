@@ -1,0 +1,100 @@
+{% load static %}
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+
+    <!-- About -->
+    <div class="footer-col">
+      <a href="{% url 'home' %}" class="logo footer-logo">
+        <span class="logo-icon"><i data-lucide="shopping-bag"></i></span>
+        <span class="logo-text">Shop<span class="logo-orange">Ease</span></span>
+      </a>
+      <p class="footer-tagline">
+        Your convenience, our priority. Kenya's most trusted destination
+        for genuine electronics and gadgets.
+      </p>
+      <div class="footer-contact">
+        <a href="mailto:sales@shopease.co.ke">
+          <i data-lucide="mail"></i> sales@shopease.co.ke
+        </a>
+        <a href="tel:0798472424">
+          <i data-lucide="phone"></i> 0798 472 424
+        </a>
+        <a href="https://wa.me/254798472424" target="_blank" rel="noopener">
+          <i data-lucide="message-circle"></i> WhatsApp Order
+        </a>
+      </div>
+    </div>
+
+    <!-- Customer Service -->
+    <div class="footer-col">
+      <h4>Customer Service</h4>
+      <ul>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Delivery Information</a></li>
+        <li><a href="#">Returns & Refunds</a></li>
+        <li><a href="#">Warranty Policy</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+
+    <!-- Shop -->
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="{% url 'products:catalog' %}">All Products</a></li>
+        <li><a href="{% url 'products:catalog' %}?category=laptops">Laptops</a></li>
+        <li><a href="{% url 'products:catalog' %}?category=phones">Phones & Tablets</a></li>
+        <li><a href="{% url 'products:catalog' %}?category=audio">Audio</a></li>
+        <li><a href="{% url 'products:catalog' %}?category=gaming">Gaming</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About ShopEase</a></li>
+        <li><a href="#">Our Stores</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <!-- Store Location -->
+    <div class="footer-col">
+      <h4>Visit Our Store</h4>
+      <div class="store-info">
+        <p><i data-lucide="map-pin"></i> Nairobi CBD<br>
+          Kimathi Street, Vision Plaza<br>
+          2nd Floor, Shop 24</p>
+        <p><i data-lucide="clock"></i> Mon–Sat: 9:00 AM – 6:00 PM<br>
+          Sun: Closed</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Payment methods -->
+  <div class="container footer-payment">
+    <span class="payment-label">We Accept:</span>
+    <div class="payment-methods">
+      <span class="payment-badge">M-Pesa</span>
+      <span class="payment-badge">Visa</span>
+      <span class="payment-badge">Mastercard</span>
+    </div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>&copy; {% now "Y" %} ShopEase Kenya. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>

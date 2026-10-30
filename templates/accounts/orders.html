@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Orders — ShopEase{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container account-wrap">
+  <aside class="account-sidebar">
+    <div class="account-user">
+      <div class="avatar">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
+      <h3>{{ user.get_full_name|default:user.username }}</h3>
+      <p>{{ user.email }}</p>
+    </div>
+    <nav class="account-nav">
+      <a href="{% url 'accounts:profile' %}"><i data-lucide="user"></i> Profile</a>
+      <a href="{% url 'accounts:orders' %}" class="active"><i data-lucide="package"></i> My Orders</a>
+      <a href="{% url 'accounts:profile_update' %}"><i data-lucide="settings"></i> Edit Profile</a>
+      <a href="{% url 'accounts:logout' %}"><i data-lucide="log-out"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <section class="account-main">
+    <h1>My Orders</h1>
+    {% if orders %}
+      <div class="orders-list">
+        {% for order in orders %}
+          <div class="order-card">...</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i data-lucide="package-open"></i>
+        <h2>No orders yet</h2>
+        <p>Your orders will appear here once you place one via WhatsApp.</p>
+        <a href="{% url 'products:catalog' %}" class="btn-primary">Start shopping</a>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
