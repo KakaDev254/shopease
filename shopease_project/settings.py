@@ -7,6 +7,7 @@ Production: Railway (PostgreSQL) + Cloudinary media + WhiteNoise static
 Environment variables are read from .env via python-decouple.
 """
 
+import os
 from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
@@ -19,6 +20,11 @@ import cloudinary.api
 # BASE
 # ------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# FORCE RAILWAY FOLDER STRUCTURE
+# Railway mounts the app in /app. This ensures collectstatic finds the static folder.
+if os.path.exists('/app'):
+    BASE_DIR = Path('/app')
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -142,7 +148,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise compressed manifest (best for Railway)
+# WhiteNoise compressed storage (safest for Railway)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
