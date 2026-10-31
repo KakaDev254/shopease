@@ -74,7 +74,7 @@ body {
     display: block;
     aspect-ratio: 1/1;
     padding: 30px;
-    background: var(--gray-bg); /* Subtle tint to make white products pop */
+    background: var(--gray-bg);
     position: relative;
     border-bottom: 1px solid var(--border);
 }
@@ -110,7 +110,7 @@ body {
 .action-btn {
     width: 38px;
     height: 38px;
-    background: #fff; /* White background for buttons to contrast against tinted image bg */
+    background: #fff; 
     border: 1px solid var(--border);
     border-radius: 6px; 
     display: flex;
@@ -131,6 +131,14 @@ body {
 .action-btn i {
     width: 18px;
     height: 18px;
+}
+
+/* Spinner Animation */
+.spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
 }
 
 /* Product Body */
@@ -177,7 +185,7 @@ body {
 .product-price {
     font-size: 20px;
     font-weight: 800;
-    color: var(--orange); /* Vibrant brand orange */
+    color: var(--orange); 
 }
 
 /* =========================================
@@ -231,23 +239,30 @@ body {
 
     /* 
       OVERRIDE FOR MOBILE: 
-      Since there is no hover on touch screens, we force the 
-      buttons to be permanently visible in the top right.
+      Buttons visible permanently, with z-index to ensure taps register.
     */
     .product-actions {
         top: 15px;
-        right: 15px; /* Instantly visible */
+        right: 15px; 
         flex-direction: column; 
         gap: 8px;
-        opacity: 1; /* Override the 0 opacity */
-        transition: none; /* Disable the slide animation */
+        opacity: 1; 
+        z-index: 30; /* Ensures buttons sit above the image link */
+        pointer-events: auto; /* Allows tap events */
+        transition: none; 
     }
 
     .action-btn {
-        width: 36px;
-        height: 36px;
-        background: #fff; /* White background on mobile */
+        width: 38px;
+        height: 38px;
+        background: #fff; 
         border: 1px solid var(--border);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        pointer-events: auto; 
+    }
+    
+    /* Hide Quick View on mobile to save space */
+    .product-actions a.action-btn {
+        display: none; 
     }
 }

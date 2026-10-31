@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.cart-qty-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation(); // Stop event bubbling
+                
                 const slug = e.target.closest('button').dataset.slug;
                 const action = e.target.closest('button').dataset.action;
                 const input = document.getElementById(`qty-${slug}`);
@@ -76,11 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Global Add to Cart buttons (from product cards & detail page)
+    // Global Add to Cart buttons (Handles both desktop & mobile taps)
     document.body.addEventListener('click', (e) => {
         const btn = e.target.closest('.add-to-cart');
+        
         if (btn) {
-            e.preventDefault();
+            // Crucial for mobile: Stop the click from triggering the parent link
+            e.preventDefault(); 
+            e.stopPropagation(); 
+            
             const slug = btn.dataset.slug;
             const qtySource = btn.dataset.qtySource; // For detail page quantity selector
             let qty = 1;
@@ -89,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const qtyInput = document.querySelector(qtySource);
                 if (qtyInput) qty = parseInt(qtyInput.value) || 1;
             }
+
+            // Add a visual "loading" state so the user knows the tap worked
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i>';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
             const formData = new FormData();
             formData.append('slug', slug);
@@ -101,12 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(res => res.json())
             .then(data => {
+                // Restore button text
+                btn.innerHTML = originalContent;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
                 if (data.ok) {
                     updateBadges(data.cart_count);
                     openCart(); // Automatically open drawer on add
                 } else {
                     alert('Error adding to cart. Please try again.');
                 }
+            })
+            .catch(err => {
+                btn.innerHTML = originalContent;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                console.error('Cart Error:', err);
             });
         }
     });

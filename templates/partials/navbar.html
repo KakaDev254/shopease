@@ -59,7 +59,7 @@
     <div class="nav-actions">
       
       <!-- Mobile Search Icon (Hidden on Desktop) -->
-      <button class="icon-btn mobile-search-btn" aria-label="Search">
+      <button class="icon-btn mobile-search-btn" id="mobile-search-toggle" aria-label="Search">
         <i data-lucide="search"></i>
       </button>
 
@@ -141,23 +141,42 @@
   </div>
 </div>
 
-<!-- ================= DROPDOWN TOGGLE SCRIPT ================= -->
+<!-- ================= SCRIPTS ================= -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Mega Menu Toggle
     const megaToggle = document.getElementById('mega-toggle');
     const megaMenu = document.getElementById('mega-menu');
 
     if (megaToggle && megaMenu) {
-        // Toggle the menu when clicking the button
         megaToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevents the click from bubbling up to the document
+            e.stopPropagation();
             megaMenu.classList.toggle('show');
         });
 
-        // Close the menu when clicking anywhere outside of it
         document.addEventListener('click', (e) => {
             if (!megaMenu.contains(e.target) && !megaToggle.contains(e.target)) {
                 megaMenu.classList.remove('show');
+            }
+        });
+    }
+
+    // 2. Mobile Search Toggle
+    const mobileSearchBtn = document.getElementById('mobile-search-toggle');
+    const searchForm = document.getElementById('search-form');
+
+    if (mobileSearchBtn && searchForm) {
+        mobileSearchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            searchForm.classList.toggle('mobile-active');
+            
+            if (searchForm.classList.contains('mobile-active')) {
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.focus();
+                }
             }
         });
     }
