@@ -1,4 +1,5 @@
 {% load humanize %}
+
 {% if items %}
     <div class="cart-items-list">
         {% for item in items %}
@@ -23,12 +24,12 @@
     
     <!-- Subtotal & Checkout -->
     <div style="margin-top: 20px;">
-        <div class="subtotal">
+        <div class="subtotal" style="display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 16px; color: var(--navy);">
             <span>Subtotal</span>
             <span>KSh {{ subtotal|floatformat:0|intcomma }}</span>
         </div>
         <a href="https://wa.me/254798472424?text=Hi%20ShopEase,%20I'd%20like%20to%20checkout%20my%20cart" 
-           target="_blank" class="btn-primary btn-block" style="text-align:center; display:block; padding: 12px;">
+           target="_blank" class="btn-primary btn-block" style="text-align:center; display:block; padding: 12px; border-radius: 8px; text-decoration: none;">
             Checkout via WhatsApp
         </a>
     </div>

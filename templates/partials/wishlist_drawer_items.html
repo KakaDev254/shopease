@@ -1,0 +1,33 @@
+{% load humanize %}
+
+{% if items %}
+    <div class="cart-items-list">
+        {% for product in items %}
+        <div class="cart-item">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="cart-item-details">
+                <a href="{% url 'products:detail' product.slug %}" class="ci-name">{{ product.name }}</a>
+                <div class="ci-price">KSh {{ product.price|floatformat:0|intcomma }}</div>
+                
+                <div class="ci-actions" style="display: flex; gap: 8px; margin-top: 8px;">
+                    <!-- Add to Cart from Wishlist -->
+                    <button class="btn-primary add-to-cart" data-slug="{{ product.slug }}" style="padding: 6px 10px; font-size: 12px; flex: 1;">
+                        Add to Cart
+                    </button>
+
+                    <!-- Remove from Wishlist -->
+                    <button class="wish-btn active" data-slug="{{ product.slug }}" style="background: var(--gray-bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; cursor: pointer; color: #ef4444;" title="Remove from Wishlist">
+                        <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state" style="padding: 40px 0; text-align: center;">
+        <i data-lucide="heart" style="width: 40px; height: 40px; color: #cbd5e1; margin-bottom: 10px;"></i>
+        <p style="color: var(--text-muted);">Your wishlist is empty.</p>
+    </div>
+{% endif %}
+<script>lucide.createIcons();</script>
