@@ -59,7 +59,7 @@
     <div class="nav-actions">
       
       <!-- Mobile Search Icon (Hidden on Desktop) -->
-      <button class="icon-btn mobile-search-btn" id="mobile-search-toggle" aria-label="Search">
+      <button class="icon-btn mobile-search-btn" id="mobile-search-toggle" aria-label="Search" onclick="document.getElementById('search-form').classList.toggle('mobile-active'); if(document.getElementById('search-form').classList.contains('mobile-active')) { setTimeout(() => document.getElementById('search-input').focus(), 100); }">
         <i data-lucide="search"></i>
       </button>
 
@@ -141,10 +141,9 @@
   </div>
 </div>
 
-<!-- ================= SCRIPTS ================= -->
+<!-- ================= SCRIPT FOR MEGA MENU ONLY ================= -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mega Menu Toggle
     const megaToggle = document.getElementById('mega-toggle');
     const megaMenu = document.getElementById('mega-menu');
 
@@ -157,26 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if (!megaMenu.contains(e.target) && !megaToggle.contains(e.target)) {
                 megaMenu.classList.remove('show');
-            }
-        });
-    }
-
-    // 2. Mobile Search Toggle
-    const mobileSearchBtn = document.getElementById('mobile-search-toggle');
-    const searchForm = document.getElementById('search-form');
-
-    if (mobileSearchBtn && searchForm) {
-        mobileSearchBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            searchForm.classList.toggle('mobile-active');
-            
-            if (searchForm.classList.contains('mobile-active')) {
-                const searchInput = document.getElementById('search-input');
-                if (searchInput) {
-                    searchInput.focus();
-                }
             }
         });
     }

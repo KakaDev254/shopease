@@ -427,7 +427,7 @@
         flex-direction: column;
         align-items: stretch;
         gap: 0;
-        padding: 0; /* Remove container padding to make it edge-to-edge */
+        padding: 0;
     }
     .mega-toggle {
         width: 100%;
@@ -438,23 +438,22 @@
         padding: 10px 16px;
     }
 
-    /* ---------- MOBILE SEARCH DROPDOWN ---------- */
-    /* This shows the search bar when the icon is tapped */
+    /* ---------- MOBILE SEARCH DROPDOWN (THE FIX) ---------- */
     .search-bar.mobile-active {
-        display: flex;
+        display: flex !important; /* Force display */
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
+        width: 100%;
         background: #fff;
         padding: 12px 20px;
         box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-        z-index: 100;
+        z-index: 999; /* Ensure it stays on top */
         border-bottom: 1px solid var(--border);
-        border-radius: 0; /* Remove rounding for a flush drop-down look */
+        border-radius: 0;
     }
     
-    /* Ensure the live search results dropdown works inside the mobile view */
     .search-bar.mobile-active .search-results {
         top: calc(100% + 12px); 
         border-radius: 8px;
