@@ -171,12 +171,12 @@
     gap: 40px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    scrollbar-width: none;
     padding-bottom: 10px;
 }
 
 .category-slider::-webkit-scrollbar {
-    display: none; /* Hide scrollbar Chrome/Safari */
+    display: none;
 }
 
 /* Individual Category Item */
@@ -242,23 +242,24 @@
     max-height: 50px;
     max-width: 100%;
 }
+
 /* ---------- PROMO BANNERS (MEGA DEALS) ---------- */
 .promo-slider {
     display: flex;
     gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    scrollbar-width: none;
     padding-bottom: 10px;
 }
 
 .promo-slider::-webkit-scrollbar {
-    display: none; /* Hide scrollbar Chrome/Safari */
+    display: none;
 }
 
 .promo-card {
     flex: 0 0 auto;
-    width: 260px; /* Fixed width for the portrait style */
+    width: 260px;
     border-radius: 8px;
     overflow: hidden;
     display: block;
@@ -274,7 +275,6 @@
     width: 100%;
     height: auto;
     display: block;
-    /* Ensure the image has a set aspect ratio if uploads vary */
     aspect-ratio: 4 / 5; 
     object-fit: cover; 
 }
@@ -282,7 +282,7 @@
 /* Mobile Adjustments */
 @media (max-width: 768px) {
     .promo-card {
-        width: 200px; /* Smaller on mobile */
+        width: 200px; 
     }
 }
 
@@ -313,97 +313,24 @@
 }
 
 /* =========================================
-   MOBILE RESPONSIVENESS (Phones)
-   ========================================= */
-@media (max-width: 768px) {
-    .hero-section {
-        padding: 10px 0;
-    }
-    
-    .hero-carousel {
-        height: 260px; 
-        aspect-ratio: auto;
-        border-radius: 12px;
-        background-color: var(--gray-bg);
-    }
-    
-    .hero-slide {
-        position: absolute;
-        display: block; 
-        opacity: 0;
-        visibility: hidden;
-        height: 100%;
-    }
-    
-    .hero-slide.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .hero-slide-link {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .hero-poster-img {
-        width: 101%; /* Fix for edge bleeding */
-        height: 100%;
-        object-fit: cover; 
-        object-position: left center; 
-        display: block;
-    }
-
-    .hero-arrow { 
-        display: none; 
-    }
-    
-    .hero-dots {
-        bottom: 15px;
-    }
-
-    /* Mobile Categories */
-    .category-header {
-        margin-bottom: 20px;
-    }
-    .cat-arrows {
-        display: none; /* Hide arrows, let users swipe */
-    }
-    .category-slider {
-        gap: 24px;
-    }
-    .cat-image-wrap {
-        width: 100px;
-        height: 100px;
-        padding: 15px;
-    }
-    .cat-name {
-        font-size: 14px;
-    }
-
-    /* Other Sections */
-    .section { padding: 40px 0; }
-    .section-title { font-size: 22px; margin-bottom: 20px; }
-    
-    .newsletter h2 { font-size: 24px; }
-    .newsletter-form { flex-direction: column; padding: 0 20px; }
-}
-
-/* =========================================
    PHONES & TABLETS SHOWCASE
    ========================================= */
 .phones-showcase-layout {
     display: grid;
-    grid-template-columns: 320px 1fr; /* 320px for banner, rest for grid */
-    gap: 0; /* No gap to mimic the seamless table look */
-    border: 1px solid var(--border); /* Outer border */
+    /* 320px for banner, then 5 equal columns for products */
+    grid-template-columns: 320px repeat(5, 1fr); 
+    gap: 0; 
+    border: 1px solid var(--border); 
 }
 
 /* Left Banner */
 .phones-promo-banner {
     position: relative;
-    background: #d4a373; /* Fallback color if image fails */
+    background: #d4a373; 
     overflow: hidden;
+    /* Force the banner to stretch the full height of the 2 product rows */
+    grid-row: span 2; 
+    min-height: 400px; 
 }
 
 .phones-promo-banner a {
@@ -413,39 +340,24 @@
     position: relative;
 }
 
-/* Text Overlay (Only shows if you don't use a fully designed image) */
-.promo-text-overlay {
+.phones-promo-banner img {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    right: 0;
-    padding: 30px;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: #fff;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.promo-text-overlay h2 {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 12px;
-}
-
-.promo-text-overlay span {
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-/* Right Grid (Overrides the default product-grid borders) */
+/* 
+  Right Grid is no longer a separate grid! 
+  It's now part of the main layout.
+*/
 .phones-product-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    border-left: 1px solid var(--border); /* Separate banner from grid */
+    display: contents; 
 }
 
+/* Apply borders to the product cards so they look like a table */
 .phones-product-grid .product-card {
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -453,43 +365,11 @@
     border-left: none;
 }
 
-/* Remove bottom border for the last row to keep it flush */
-.phones-product-grid .product-card:nth-last-child(-n+5) {
-    border-bottom: none;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 1024px) {
-    .phones-showcase-layout {
-        grid-template-columns: 1fr; /* Stack on smaller screens */
-    }
-    
-    .phones-promo-banner {
-        height: 250px; /* Give banner a fixed height on mobile */
-    }
-    
-    .phones-product-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
-        border-left: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .phones-product-grid {
-        grid-template-columns: 1fr; /* 1 column on mobile */
-    }
-    
-    /* Reset mobile card borders so they don't double up */
-    .phones-product-grid .product-card {
-        border-right: none;
-    }
-}
-
 /* =========================================
    WHATSAPP CTA BANNER
    ========================================= */
 .whatsapp-cta-banner {
-    background-color: #25D366; /* WhatsApp Brand Green */
+    background-color: #25D366;
     color: #fff;
     padding: 30px 0;
 }
@@ -536,8 +416,106 @@
     height: 20px;
 }
 
-/* Mobile Responsiveness */
+/* =========================================
+   MOBILE RESPONSIVENESS (Phones)
+   ========================================= */
+@media (max-width: 1024px) {
+    .phones-showcase-layout {
+        grid-template-columns: 1fr; 
+    }
+    
+    .phones-promo-banner {
+        grid-row: auto; 
+        height: 250px; 
+        min-height: 250px;
+    }
+    
+    .phones-product-grid {
+        display: grid; 
+        grid-template-columns: repeat(3, 1fr); 
+        border-left: none;
+    }
+}
+
 @media (max-width: 768px) {
+    .hero-section {
+        padding: 10px 0;
+    }
+    
+    .hero-carousel {
+        height: 260px; 
+        aspect-ratio: auto;
+        border-radius: 12px;
+        background-color: var(--gray-bg);
+    }
+    
+    .hero-slide {
+        position: absolute;
+        display: block; 
+        opacity: 0;
+        visibility: hidden;
+        height: 100%;
+    }
+    
+    .hero-slide.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .hero-slide-link {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .hero-poster-img {
+        width: 101%;
+        height: 100%;
+        object-fit: cover; 
+        object-position: left center; 
+        display: block;
+    }
+
+    .hero-arrow { 
+        display: none; 
+    }
+    
+    .hero-dots {
+        bottom: 15px;
+    }
+
+    /* Mobile Categories */
+    .category-header {
+        margin-bottom: 20px;
+    }
+    .cat-arrows {
+        display: none; 
+    }
+    .category-slider {
+        gap: 24px;
+    }
+    .cat-image-wrap {
+        width: 100px;
+        height: 100px;
+        padding: 15px;
+    }
+    .cat-name {
+        font-size: 14px;
+    }
+
+    /* Other Sections */
+    .section { padding: 40px 0; }
+    .section-title { font-size: 22px; margin-bottom: 20px; }
+    
+    .newsletter h2 { font-size: 24px; }
+    .newsletter-form { flex-direction: column; padding: 0 20px; }
+
+    /* Showcase Mobile */
+    .phones-product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+    }
+
+    /* WhatsApp CTA Mobile */
     .whatsapp-cta-content {
         flex-direction: column;
         text-align: center;
