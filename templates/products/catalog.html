@@ -12,10 +12,17 @@
 {% block content %}
 <div class="container catalog-wrap">
 
-  <!-- ---------- SIDEBAR FILTERS ---------- -->
-  <aside class="catalog-sidebar">
-    <form method="get" id="filter-form">
+  <!-- Mobile Filter Overlay -->
+  <div class="filter-overlay" id="filter-overlay"></div>
 
+  <!-- ---------- SIDEBAR FILTERS ---------- -->
+  <aside class="catalog-sidebar" id="catalog-sidebar">
+    <div class="sidebar-header-mobile">
+      <h3>Filters</h3>
+      <button id="close-filters" class="close-filters-btn"><i data-lucide="x"></i></button>
+    </div>
+
+    <form method="get" id="filter-form">
       <!-- Categories -->
       <div class="filter-block">
         <h3>Category</h3>
@@ -73,21 +80,31 @@
   <section class="catalog-main">
 
     <div class="catalog-toolbar">
-      <p class="result-count"><strong>{{ product_count }}</strong> product{{ product_count|pluralize }}</p>
-      <form method="get" class="sort-form">
-        {# preserve other filters #}
-        {% for k, v in request.GET.items %}
-          {% if k != 'sort' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endif %}
-        {% endfor %}
-        <label>Sort by
-          <select name="sort" onchange="this.form.submit()">
-            <option value="popular"     {% if sort == 'popular' %}selected{% endif %}>Most Popular</option>
-            <option value="price_asc"   {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
-            <option value="price_desc"  {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
-            <option value="newest"      {% if sort == 'newest' %}selected{% endif %}>Newest</option>
-          </select>
-        </label>
-      </form>
+      <div class="toolbar-left">
+        <p class="result-count"><strong>{{ product_count }}</strong> product{{ product_count|pluralize }}</p>
+      </div>
+      
+      <div class="toolbar-right">
+        <!-- Mobile Filter Toggle Button -->
+        <button id="open-filters" class="mobile-filter-btn">
+          <i data-lucide="sliders-horizontal"></i> Filter
+        </button>
+
+        <form method="get" class="sort-form">
+          {# preserve other filters #}
+          {% for k, v in request.GET.items %}
+            {% if k != 'sort' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endif %}
+          {% endfor %}
+          <label>Sort by
+            <select name="sort" onchange="this.form.submit()">
+              <option value="popular"     {% if sort == 'popular' %}selected{% endif %}>Most Popular</option>
+              <option value="price_asc"   {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_desc"  {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+              <option value="newest"      {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+            </select>
+          </label>
+        </form>
+      </div>
     </div>
 
     {% if products %}
@@ -106,4 +123,31 @@
 
   </section>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('catalog-sidebar');
+    const overlay = document.getElementById('filter-overlay');
+    const openBtn = document.getElementById('open-filters');
+    const closeBtn = document.getElementById('close-filters');
+
+    function openFilters() {
+        sidebar.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilters() {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openFilters);
+    if (closeBtn) closeBtn.addEventListener('click', closeFilters);
+    if (overlay) overlay.addEventListener('click', closeFilters);
+});
+</script>
 {% endblock %}
