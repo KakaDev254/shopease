@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Min, Max
 from django.http import JsonResponse
+from urllib.parse import quote
 from django.views.decorators.http import require_GET, require_POST
 from django.template.loader import render_to_string
 
@@ -191,13 +192,19 @@ def cart_update(request):
     })
 
 
+
+
 @require_GET
 def cart_drawer(request):
-    """Renders the HTML of the cart drawer (fetched by JS)."""
+    """Renders the HTML of the cart drawer and builds the WhatsApp checkout link."""
     from django.conf import settings
     cart = request.session.get(settings.CART_SESSION_ID, {})
     items = []
     subtotal = Decimal('0')
+    
+    # Base WhatsApp message
+    message = "Hello ShopEase! I'd like to checkout the following items:\n\n"
+    
     for pid, qty in cart.items():
         p = Product.objects.filter(id=pid).first()
         if not p:
@@ -205,11 +212,21 @@ def cart_drawer(request):
         line = p.price * qty
         subtotal += line
         items.append({'product': p, 'qty': qty, 'line_total': line})
+        
+        # Add item to the message
+        message += f"▪ {qty}x {p.name} - KSh {line:,.0f}\n"
+        
+    message += f"\n*Total: KSh {subtotal:,.0f}*\n\n"
+    message += "Please confirm my order and let me know the delivery details."
+    
+    # URL-encode the message so it works in the href attribute
+    whatsapp_url = f"https://wa.me/254798472424?text={quote(message)}"
 
     return render(request, 'partials/cart_drawer_items.html', {
         'items': items,
         'subtotal': subtotal,
         'cart_count': sum(cart.values()),
+        'whatsapp_url': whatsapp_url, # Pass the dynamic URL to the template
     })
 
 

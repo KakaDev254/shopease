@@ -28,8 +28,13 @@
             <span>Subtotal</span>
             <span>KSh {{ subtotal|floatformat:0|intcomma }}</span>
         </div>
-        <a href="https://wa.me/254798472424?text=Hi%20ShopEase,%20I'd%20like%20to%20checkout%20my%20cart" 
-           target="_blank" class="btn-primary btn-block" style="text-align:center; display:block; padding: 12px; border-radius: 8px; text-decoration: none;">
+        
+        <!-- Use the dynamic WhatsApp URL generated in the view -->
+        <a href="{{ whatsapp_url }}" 
+           target="_blank" 
+           class="btn-primary btn-block" 
+           style="display:flex; align-items:center; justify-content:center; gap:8px; padding: 12px; border-radius: 8px; text-decoration: none;">
+            <i data-lucide="message-circle" style="width: 20px; height: 20px;"></i>
             Checkout via WhatsApp
         </a>
     </div>
