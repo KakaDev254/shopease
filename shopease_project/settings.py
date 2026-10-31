@@ -148,8 +148,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise compressed storage (safest for Railway)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# 1. Use basic storage (prevents manifest crashes)
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# 2. Tell WhiteNoise to actively search your static folders
+WHITENOISE_USE_FINDERS = True
 
 
 # ------------------------------------------------------------------
