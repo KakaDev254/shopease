@@ -37,6 +37,14 @@
       {% endfor %}
     </div>
     {% endif %}
+       <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/254798472424?text=Hi%20ShopEase,%20I%20need%20some%20help." 
+      class="floating-whatsapp" 
+      target="_blank" 
+      rel="noopener" 
+      aria-label="Chat on WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
 
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
@@ -44,5 +52,7 @@
     <script src="{% static 'js/wishlist.js' %}"></script>
     {% block extra_js %}{% endblock %}
     <script>lucide.createIcons();</script>
+
+ 
 </body>
 </html>
