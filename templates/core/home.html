@@ -122,6 +122,48 @@
     </div>
 </section>
 {% endif %}
+<!-- WHATSAPP CTA BANNER -->
+<section class="whatsapp-cta-banner">
+    <div class="container whatsapp-cta-content">
+        <div class="whatsapp-text">
+            <h2>Need help finding the perfect gadget?</h2>
+            <p>Chat with our tech experts on WhatsApp for personalized recommendations, exclusive discounts, and fast delivery in Nairobi.</p>
+        </div>
+        <a href="https://wa.me/254798472424?text=Hi%20ShopEase,%20I%20need%20help%20choosing%20a%20product" target="_blank" rel="noopener" class="whatsapp-btn">
+            <i data-lucide="message-circle"></i> Chat with us
+        </a>
+    </div>
+</section>
+
+<!-- PHONES & TABLETS SHOWCASE -->
+{% if phones_products %}
+<section class="section bg-white" style="padding: 40px 0;">
+    <div class="container">
+        
+        <div class="phones-showcase-layout">
+            
+            <!-- Left Side: Promo Banner -->
+            <div class="phones-promo-banner">
+                <a href="{% url 'products:catalog' %}?category={{ phones_category.slug }}">
+                    
+                    <!-- USE THE STATIC TAG HERE -->
+                    <img src="{% static 'images/phone-banner1.png' %}" alt="Discount on Phones & Tablets" style="width: 100%; height: 100%; object-fit: cover;">
+                    
+                </a>
+            </div>
+
+            <!-- Right Side: Product Grid -->
+            <div class="phones-product-grid">
+                {% for product in phones_products %}
+                    {% include 'products/partials/product_card.html' with product=product %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endif %}
 
 <!-- BRAND SHOWCASE -->
 <section class="section brands">

@@ -260,9 +260,4 @@ body {
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         pointer-events: auto; 
     }
-    
-    /* Hide Quick View on mobile to save space */
-    .product-actions a.action-btn {
-        display: none; 
-    }
 }

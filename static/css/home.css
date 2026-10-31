@@ -388,3 +388,168 @@
     .newsletter h2 { font-size: 24px; }
     .newsletter-form { flex-direction: column; padding: 0 20px; }
 }
+
+/* =========================================
+   PHONES & TABLETS SHOWCASE
+   ========================================= */
+.phones-showcase-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* 320px for banner, rest for grid */
+    gap: 0; /* No gap to mimic the seamless table look */
+    border: 1px solid var(--border); /* Outer border */
+}
+
+/* Left Banner */
+.phones-promo-banner {
+    position: relative;
+    background: #d4a373; /* Fallback color if image fails */
+    overflow: hidden;
+}
+
+.phones-promo-banner a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Text Overlay (Only shows if you don't use a fully designed image) */
+.promo-text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: #fff;
+}
+
+.promo-text-overlay h2 {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+.promo-text-overlay span {
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Right Grid (Overrides the default product-grid borders) */
+.phones-product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-left: 1px solid var(--border); /* Separate banner from grid */
+}
+
+.phones-product-grid .product-card {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-top: none;
+    border-left: none;
+}
+
+/* Remove bottom border for the last row to keep it flush */
+.phones-product-grid .product-card:nth-last-child(-n+5) {
+    border-bottom: none;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1024px) {
+    .phones-showcase-layout {
+        grid-template-columns: 1fr; /* Stack on smaller screens */
+    }
+    
+    .phones-promo-banner {
+        height: 250px; /* Give banner a fixed height on mobile */
+    }
+    
+    .phones-product-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+        border-left: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .phones-product-grid {
+        grid-template-columns: 1fr; /* 1 column on mobile */
+    }
+    
+    /* Reset mobile card borders so they don't double up */
+    .phones-product-grid .product-card {
+        border-right: none;
+    }
+}
+
+/* =========================================
+   WHATSAPP CTA BANNER
+   ========================================= */
+.whatsapp-cta-banner {
+    background-color: #25D366; /* WhatsApp Brand Green */
+    color: #fff;
+    padding: 30px 0;
+}
+
+.whatsapp-cta-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.whatsapp-text h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.whatsapp-text p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+    background: #1e293b;
+    transform: translateY(-2px);
+}
+
+.whatsapp-btn i {
+    width: 20px;
+    height: 20px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .whatsapp-cta-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .whatsapp-text h2 {
+        font-size: 20px;
+    }
+    
+    .whatsapp-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
